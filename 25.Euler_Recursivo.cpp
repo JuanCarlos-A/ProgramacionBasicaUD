@@ -1,38 +1,46 @@
 #include <iostream>
 using namespace std;
 
-int main() {
-    int n, i, j;
-    double factorial, suma;
+double factorialRec(int i) {
+    if (i == 0) return 1;               // Caso base
+    return i * factorialRec(i - 1);     // Llamada recursiva
+}
 
+
+double sumaRec(int k) {
+    if (k == 0) return 1;  // 1/0! = 1
+
+    // Llamada recursiva acumulando los términos anteriores
+    return (1.0 / factorialRec(k)) + sumaRec(k - 1);
+}
+
+int main() {
+
+    int n;
     cout << "Ingrese el valor que tomara n o el enesimo termino:" << endl;
     cin >> n;
 
-    suma = 0;
+    // Validación
+    if (n <= 0) {
+        cout << "El numero debe ser mayor que 0." << endl;
+        return 0;
+    }
 
-    // Se recorre desde 0 hasta n-1
-    for (i = 0; i <= n - 1; i = i + 1) {
+    cout << "Serie de términos 1/i! :" << endl;
 
-        // Calcular el factorial de i
-        factorial = 1;
-
-        // Comprobamos que i sea mayor a 0
-        if (i > 0) {
-            // Calcular factorial de i
-            for (j = 1; j <= i; j = j + 1) {
-                factorial = factorial * j;
-            }
-        }
-
-        // Agregar el término a la suma
-        suma = suma + 1 / factorial;
-
-        // Mostrar el término actual
-        cout << "Termino " << i << ": 1/" << i << "! = " << 1 / factorial << endl;
+    // Mostrar la serie (usamos factorialRec aquí también)
+    for (int i = 0; i <= n - 1; i++) {
+        cout << "Termino " << i << ": 1/" << i << "! = "
+             << 1.0 / factorialRec(i) << endl;
     }
 
     cout << "------------------------------------" << endl;
-    cout << "Valor aproximado de e hasta n = " << n << " es: " << suma << endl;
+
+    // Calcular suma usando recursión
+    double resultado = sumaRec(n - 1);
+
+    cout << "Valor aproximado de e hasta n = " << n << " es: "
+         << resultado << endl;
 
     return 0;
 }
